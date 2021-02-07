@@ -20,7 +20,7 @@ function getNumShapes() {
     return (randomSelectTwo())? SIDES : SIDES * 2;
 }
 
-function decideOuterShape() {
+function decideShape() {
     return (randomSelectTwo())? "ellipse" : "hexagon";
 }
 

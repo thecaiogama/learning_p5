@@ -27,9 +27,11 @@ function getOutlineShape() {
     strokeWeight(getStrokeWeight());
 
     push();
+        noFill();
         centerShape();
-        const outerShape = decideOuterShape();
+        const outerShape = decideShape();
         drawOuterShape(outerShape, 0, 0, CRYSTAL_SIZE);
+        growingFromCenter(outerShape);
         simpleLines();
         circles();
     pop();
@@ -43,7 +45,6 @@ function circles() {
 
     stroke(getRandomColor(PALETTE));
     strokeWeight(getStrokeWeight());
-    noFill();
 
     for(let i = 0; i < numShapes; i++) {
         ellipse(position, 0, shapesSize, shapesSize);
@@ -66,7 +67,28 @@ function simpleLines() {
     strokeWeight(getStrokeWeight());
     stroke(getRandomColor(PALETTE));
     for(let i = 0; i < numShapes; i++) {
-        line(start * step, 0, 8 * step, 0);
+        line(start * step, 0, stop * step, 0);
         rotate(angle);
     }
+}
+
+function growingFromCenter(outerShape_) {
+    let numShapes = SIDES;
+    let unit      = floor(CRYSTAL_SIZE/numShapes);
+    let size      = unit;
+    const shape   = decideShape();
+    
+    if(shape == "hexagon" && outerShape_ == "ellipse") {
+        numShapes +=1;
+    }
+
+    stroke(getRandomColor(PALETTE));
+    strokeWeight(getStrokeWeight());
+    
+    for(let i = 0; i < numShapes; i++) {
+        size = (i == 0)? unit :  unit * i;
+        
+        (shape == "ellipse")? ellipse(0, 0, size, size) :  hexagon(0, 0, size/2);
+    }
+
 }
