@@ -58,36 +58,33 @@ function simpleLines() {
     const angle     = 360/numShapes;
 
     const stepsOut = 8;
-    const numSteps = randomSelectTwo()? stepsOut : int(stepsOut * 1.25);
 
-    const step = (CRYSTAL_SIZE / 2) / numSteps;
-    const start = floor(random(0, numSteps));
-    const stop = floor(random(0, numSteps + 1));
+    const steps = calculateSteps(stepsOut, randomSelectTwo(), CRYSTAL_SIZE);
 
     strokeWeight(getStrokeWeight());
     stroke(getRandomColor(PALETTE));
     for(let i = 0; i < numShapes; i++) {
-        line(start * step, 0, stop * step, 0);
+        line(steps.start * steps.step, 0, steps.end * steps.step, 0);
         rotate(angle);
     }
 }
 
 function growingFromCenter(outerShape_) {
+    const shape   = decideShape();
     let numShapes = SIDES;
     let unit      = floor(CRYSTAL_SIZE/numShapes);
-    let size      = unit;
-    const shape   = decideShape();
     
-    if(shape == "hexagon" && outerShape_ == "ellipse") {
-        numShapes +=1;
-    }
+    unit = (!(shape == "hexagon" && outerShape_ == "ellipse"))? floor((CRYSTAL_SIZE -unit)/numShapes) : unit;
+
+    let size      = unit;
 
     stroke(getRandomColor(PALETTE));
     strokeWeight(getStrokeWeight());
-    
+
+
     for(let i = 0; i < numShapes; i++) {
-        size = (i == 0)? unit :  unit * i;
-        
+        size = (i == 0)? unit :  unit * (i+1);
+
         (shape == "ellipse")? ellipse(0, 0, size, size) :  hexagon(0, 0, size/2);
     }
 

@@ -31,3 +31,14 @@ function drawOuterShape(outerShape_, x_ = 0, y_ = 0, size_ = CRYSTAL_SIZE) {
 function centerShape() {
     translate(width/2, height/2);
 }
+
+function calculateSteps(stepsOut_, random_, crystalSize_) {
+    const multiplicationFactor = 1.25;
+    const numSteps = (random_)? stepsOut_ : int(stepsOut_ * multiplicationFactor);
+
+    return {
+        step: (crystalSize_ / 2) / numSteps,
+        start: floor(random(0, numSteps)),
+        end: floor(random(0, numSteps + 1))
+    }
+}
